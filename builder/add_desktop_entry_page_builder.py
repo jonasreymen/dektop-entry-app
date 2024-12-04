@@ -3,7 +3,7 @@ import tkinter as tk
 from builder.standard_page_builder import StandardPageBuilder
 from enums.page import Page
 from utils.gui.page_navigator_interface import PageNavigatorInterface
-from widgets.add_desktop_entry_form import AddDesktopEntryForm
+from widgets.desktop_entry_form import AddDesktopEntryForm
 from widgets.navigating_button import NavigatingButton
 
 class AddDesktopEntryPageBuilder(StandardPageBuilder):
