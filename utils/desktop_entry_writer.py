@@ -7,7 +7,7 @@ from pathlib import Path
 @typechecked
 class Desktop_entry_writer:
     def __init__(self, folder_path: str = "~/.local/share/applications/") -> None:
-        self.path = Path(folder_path).expanduser()
+        self.path: Path = Path(folder_path).expanduser()
 
     def write(self, config: Desktop_entry) -> None:
         filepath = self.path / f"{config.name.lower()}.desktop"

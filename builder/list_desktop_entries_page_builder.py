@@ -1,12 +1,13 @@
-from pydoc import text
 import tkinter as tk
 from builder.standard_page_builder import StandardPageBuilder
 from enums.page import Page
+from utils.desktop_entry_remover import DesktopEntryRemover
 from utils.gui.page_navigator_interface import PageNavigatorInterface
 from widgets.navigating_button import NavigatingButton
 
 from pathlib import Path
 from tkinter.ttk import Treeview
+from tkinter import messagebox
 
 class ListDesktopEntriesPageBuilder(StandardPageBuilder):
     def __init__(self, page_navigator: PageNavigatorInterface) -> None:
@@ -14,6 +15,8 @@ class ListDesktopEntriesPageBuilder(StandardPageBuilder):
         
         self.tree = None
         self.edit_button: NavigatingButton = None
+        self.delete_button: tk.Button = None
+        self.desktop_entry_remover: DesktopEntryRemover = DesktopEntryRemover()
     
     def build_title_frame(self, frame: tk.Frame, request_data: dict = {}) -> None:
         tk.Label(frame, text="List of Desktop Entries", background="darkgray").pack(pady=10, padx=10)
@@ -39,20 +42,35 @@ class ListDesktopEntriesPageBuilder(StandardPageBuilder):
             lambda: {"file": self.get_selected_item()},
             text="Edit desktop entry"
         )
+        self.delete_button = tk.Button(frame, text="Delete", command=self.delete_desktop_entry)
+        
         self.edit_button["state"] = "disabled"
+        self.delete_button["state"] = "disabled"
+        
         self.edit_button.grid(sticky="nsew", pady=10, padx=10)
+        self.delete_button.grid(sticky="nsew", pady=10, padx=10)
     
     def selection_callback(self, event) -> None:
         if self.get_selected_item() is not None:
             self.edit_button["state"] = "normal"
+            self.delete_button["state"] = "normal"
             return
         
         self.edit_button["state"] = "disabled"
+        self.delete_button["state"] = "disabled"
     
     def get_selected_item(self) -> str | None:
         selected_item = self.tree.selection()
         
         if selected_item:
-            print(selected_item[0])
             return selected_item[0]
         return None
+
+    def delete_desktop_entry(self) -> None:
+        selected_item = self.get_selected_item()
+        if selected_item:
+            try:
+                self.desktop_entry_remover.remove(selected_item)
+                self.tree.delete(selected_item)
+            except FileNotFoundError:
+                messagebox.showerror("Deletion error", "File not found")
