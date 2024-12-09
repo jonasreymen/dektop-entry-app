@@ -2,7 +2,7 @@ from utils.gui.page_navigator_interface import PageNavigatorInterface
 from widgets.page import Page
 
 class PageNavigator(PageNavigatorInterface):
-    pages = {}
+    pages: dict[str, Page] = {}
     
     def __init__(self, pages: list["Page"] = []) -> None:
         self.register_pages(pages)
@@ -14,6 +14,6 @@ class PageNavigator(PageNavigatorInterface):
     def register(self, page: "Page") -> None:
         self.pages[page.name] = page
     
-    def navigate(self, name: str) -> None:
+    def navigate(self, name: str, request_data: dict = {}) -> None:
         """ opens a specific page """
-        self.pages[name].tkraise()
+        self.pages[name].load(request_data)

@@ -1,4 +1,5 @@
 from models.page_config import PageConfig
+from utils.gui.page_builder_factory import PageBuilderFactory
 from utils.gui.page_navigator import PageNavigator
 from utils.gui.page_navigator_interface import PageNavigatorInterface
 from widgets.page import Page
@@ -16,10 +17,16 @@ class PageContainer(tk.Tk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         
-        self.navigator: PageNavigatorInterface = PageNavigator()
+        self.page_navigator: PageNavigatorInterface = PageNavigator()
+        self.page_builder_factory: PageBuilderFactory = PageBuilderFactory(self.page_navigator)
         self.build_pages(page_configurations)
 
     def build_pages(self, page_configurations: list[PageConfig]) -> list[Page]:
         for page_configuration in page_configurations:
-            page = Page(self, page_configuration.name, page_configuration.page_builder)
-            self.navigator.register(page)
+            page = Page(
+                self,
+                page_configuration.name,
+                PageBuilderFactory(self.page_navigator).build(page_configuration.name)
+            )
+            
+            self.page_navigator.register(page)

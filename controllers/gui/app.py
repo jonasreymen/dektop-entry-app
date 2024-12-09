@@ -7,12 +7,13 @@ from models.page_config import PageConfig
 def run_gui() -> None:
     app = PageContainer(get_page_configurations())
     
-    app.navigator.navigate(Page.LIST_PAGE.value)
+    app.page_navigator.navigate(Page.LIST_PAGE.value)
     
     app.mainloop()
 
 def get_page_configurations() -> list[PageConfig]:
     return [
-        PageConfig(Page.LIST_PAGE.value, ListDesktopEntriesPageBuilder()),
-        PageConfig(Page.ADD_PAGE.value, AddDesktopEntryPageBuilder())
+        PageConfig(Page.LIST_PAGE.value),
+        PageConfig(Page.ADD_PAGE.value),
+        PageConfig(Page.EDIT_PAGE.value),
     ]

@@ -3,6 +3,5 @@ from typeguard import typechecked
 
 @typechecked
 class PageConfig:
-    def __init__(self, name: str, page_builder: PageBuilder):
+    def __init__(self, name: str) -> None:
         self.name = name
-        self.page_builder = page_builder
