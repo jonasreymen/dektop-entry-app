@@ -1,8 +1,8 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 import tkinter as tk
 from builder.page_builder import PageBuilder
 
-class StandardPageBuilder(PageBuilder):
+class StandardPageBuilder(PageBuilder, ABC):
     @abstractmethod
     def build_title_frame(self, frame: tk.Frame, request_data: dict = {}) -> None:
         pass
