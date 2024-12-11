@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
 from enums.page_name import PageName
+from utils.desktop_entry_reader import DesktopEntryReader
 from utils.desktop_entry_remover import DesktopEntryRemover
 from utils.gui.page_navigator_interface import PageNavigatorInterface
 from widgets.navigating_button import NavigatingButton
@@ -20,6 +21,7 @@ class ListDesktopEntriesPage(StandardPage):
         self.delete_button: tk.Button = None
         self.desktop_entry_remover: DesktopEntryRemover = DesktopEntryRemover()
         self.page_navigator = page_navigator
+        self.desktop_entry_reader = DesktopEntryReader()
     
     def build_title_frame(self, frame: tk.Frame, request_data: dict = {}) -> None:
         tk.Label(frame, text="List of Desktop Entries", background="darkgray").pack(pady=10, padx=10)
@@ -73,7 +75,7 @@ class ListDesktopEntriesPage(StandardPage):
         selected_item = self.get_selected_item()
         if selected_item:
             try:
-                self.desktop_entry_remover.remove(selected_item)
+                self.desktop_entry_remover.remove(self.desktop_entry_reader.read(selected_item))
                 self.tree.delete(selected_item)
             except FileNotFoundError:
                 messagebox.showerror("Deletion error", "File not found")
