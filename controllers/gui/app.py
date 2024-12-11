@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from utils.gui.page_navigator import PageNavigator
 from widgets.page.add_desktop_entry_page import AddDesktopEntryPage
 from widgets.page.desktop_entry_root import DesktopEntryRoot
@@ -7,6 +8,8 @@ from widgets.page.list_desktop_entry_page import ListDesktopEntriesPage
 from widgets.page.page import Page
 
 def run_gui() -> None:
+    load_dotenv()
+    
     root = DesktopEntryRoot()
     navigator = PageNavigator()
     

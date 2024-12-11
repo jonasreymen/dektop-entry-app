@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from enums.page_name import PageName
 from utils.desktop_entry_remover import DesktopEntryRemover
@@ -24,7 +25,7 @@ class ListDesktopEntriesPage(StandardPage):
         tk.Label(frame, text="List of Desktop Entries", background="darkgray").pack(pady=10, padx=10)
     
     def build_content_frame(self, frame: tk.Frame, request_data: dict = {}) -> None:
-        path = Path("~/.local/share/applications/").expanduser()
+        path = Path(os.getenv("DESKTOP_ENTRY_PATH")).expanduser()
         
         gen = path.glob("*.desktop")
         

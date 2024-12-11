@@ -1,3 +1,4 @@
+import os
 from models.desktop_entry_config import Desktop_entry
 from jinja2 import Environment, FileSystemLoader
 from typeguard import typechecked
@@ -6,8 +7,8 @@ from pathlib import Path
 
 @typechecked
 class Desktop_entry_writer:
-    def __init__(self, folder_path: str = "~/.local/share/applications/") -> None:
-        self.path: Path = Path(folder_path).expanduser()
+    def __init__(self) -> None:
+        self.path: Path = Path(os.getenv("DESKTOP_ENTRY_PATH")).expanduser()
 
     def write(self, config: Desktop_entry) -> None:
         filepath = self.path / f"{config.name.lower()}.desktop"
