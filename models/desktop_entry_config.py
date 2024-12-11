@@ -1,3 +1,4 @@
+import slugify
 from typeguard import typechecked
 
 @typechecked
@@ -19,3 +20,7 @@ class Desktop_entry:
 
     def set_terminal(self) -> None:
         self.terminal = True
+    
+    def get_file_name(self) -> str:
+        name = slugify.slugify(self.name.lower())
+        return f"{name}.desktop"

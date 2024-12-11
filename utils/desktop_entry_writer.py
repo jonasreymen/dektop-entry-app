@@ -11,7 +11,7 @@ class Desktop_entry_writer:
         self.path: Path = Path(os.getenv("DESKTOP_ENTRY_PATH")).expanduser()
 
     def write(self, config: Desktop_entry) -> None:
-        filepath = self.path / f"{config.name.lower()}.desktop"
+        filepath = self.path / config.get_file_name()
         filepath.parent.mkdir(parents=True, exist_ok=True)
 
         with filepath.open("w") as file:
