@@ -1,6 +1,6 @@
 import tkinter as tk
 from enums.entry_type import EntryType
-from enums.page import Page
+from enums.page_name import PageName
 from utils.file_handler import FileHandler
 
 from exceptions.validation_exceptions import ValidationError
@@ -90,4 +90,4 @@ class AddDesktopEntryForm(tk.Frame):
         writer = Desktop_entry_writer()
         writer.write(config)
         
-        self.page_navigator.navigate(Page.LIST_PAGE)
+        self.page_navigator.navigate(PageName.LIST_PAGE)

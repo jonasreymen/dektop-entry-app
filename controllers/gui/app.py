@@ -1,19 +1,24 @@
-from builder.add_desktop_entry_page_builder import AddDesktopEntryPageBuilder
-from builder.list_desktop_entries_page_builder import ListDesktopEntriesPageBuilder
-from widgets.page_container import PageContainer
-from enums.page import Page
-from models.page_config import PageConfig
+from utils.gui.page_navigator import PageNavigator
+from widgets.page.add_desktop_entry_page import AddDesktopEntryPage
+from widgets.page.desktop_entry_root import DesktopEntryRoot
+from enums.page_name import PageName
+from widgets.page.edit_desktop_entry_page import EditDesktopEntryPage
+from widgets.page.list_desktop_entry_page import ListDesktopEntriesPage
+from widgets.page.page import Page
 
 def run_gui() -> None:
-    app = PageContainer(get_page_configurations())
+    root = DesktopEntryRoot()
+    navigator = PageNavigator()
     
-    app.page_navigator.navigate(Page.LIST_PAGE.value)
+    navigator.register_pages(generate_pages(root, navigator))
     
-    app.mainloop()
+    navigator.navigate(PageName.LIST_PAGE.value)
+    
+    root.mainloop()
 
-def get_page_configurations() -> list[PageConfig]:
+def generate_pages(root: DesktopEntryRoot, navigator: PageNavigator) -> list[Page]:
     return [
-        PageConfig(Page.LIST_PAGE.value),
-        PageConfig(Page.ADD_PAGE.value),
-        PageConfig(Page.EDIT_PAGE.value),
+        ListDesktopEntriesPage(root, navigator),
+        AddDesktopEntryPage(root, navigator),
+        EditDesktopEntryPage(root, navigator),
     ]
