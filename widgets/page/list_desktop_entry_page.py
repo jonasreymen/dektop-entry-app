@@ -32,7 +32,7 @@ class ListDesktopEntriesPage(StandardPage):
         self.tree = Treeview(frame, name="desktop_entry_tree")
         self.tree.heading("#0", text="File")
         for file in gen:
-            self.tree.insert("", tk.END, text=file.name, iid=file.as_posix())
+            self.tree.insert("", tk.END, text=file.name, iid=file.name)
         self.tree.pack(padx=10, pady=10, fill='both')
         self.tree.bind("<<TreeviewSelect>>", self.selection_callback)
     
