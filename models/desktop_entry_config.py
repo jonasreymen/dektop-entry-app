@@ -2,7 +2,7 @@ import slugify
 from typeguard import typechecked
 
 @typechecked
-class Desktop_entry:
+class DesktopEntry:
     icon_path = ""
     categories = ""
     terminal = False

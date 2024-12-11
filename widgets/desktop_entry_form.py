@@ -4,7 +4,7 @@ from enums.page_name import PageName
 from utils.file_handler import FileHandler
 
 from exceptions.validation_exceptions import ValidationError
-from models.desktop_entry_config import Desktop_entry
+from models.desktop_entry_config import DesktopEntry
 from utils.desktop_entry_writer import Desktop_entry_writer
 from utils.gui.page_navigator_interface import PageNavigatorInterface
 from widgets.checkbox import Checkbox
@@ -38,7 +38,7 @@ class AddDesktopEntryForm(tk.Frame):
         
         tk.Button(self, text="Add desktop entry", command=lambda: self.save()).pack()
     
-    def validate_config(self, config: Desktop_entry) -> list[str]:
+    def validate_config(self, config: DesktopEntry) -> list[str]:
         errors = []
         
         if not config.name:
@@ -61,13 +61,13 @@ class AddDesktopEntryForm(tk.Frame):
 
         return errors
 
-    def get_data(self) -> Desktop_entry:
+    def get_data(self) -> DesktopEntry:
         name = self.nametowidget("name").get()
         exec_path = self.nametowidget("exec_path").get()
         entry_type = self.nametowidget("entry_type").get()
         icon = self.nametowidget("icon_path").get()
 
-        config = Desktop_entry(name,exec_path,entry_type)
+        config = DesktopEntry(name,exec_path,entry_type)
         if icon:
             config.icon_path = icon
         

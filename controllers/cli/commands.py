@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 import argparse
-from models.desktop_entry_config import Desktop_entry
+from models.desktop_entry_config import DesktopEntry
 from utils.desktop_entry_writer import Desktop_entry_writer
 
-def generate_config_from_args(args) -> Desktop_entry:
-    config = Desktop_entry(args.name, args.exec_path)
+def generate_config_from_args(args) -> DesktopEntry:
+    config = DesktopEntry(args.name, args.exec_path)
     
     if args.terminal:
         config.set_terminal()
