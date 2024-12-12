@@ -15,7 +15,7 @@ class Desktop_entry_writer:
         if config.filename and config.filename != config.get_file_name():
             old_filepath = self.path / config.filename
             if old_filepath.is_file():
-            old_filepath.unlink()
+                old_filepath.unlink()
         
         filepath = self.path / config.get_file_name()
         filepath.parent.mkdir(parents=True, exist_ok=True)
