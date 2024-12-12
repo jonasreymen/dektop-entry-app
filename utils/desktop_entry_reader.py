@@ -2,7 +2,6 @@ from genericpath import isfile
 import os
 from pathlib import Path
 import re
-import dotenv
 import slugify
 from models.desktop_entry_config import DesktopEntry
 
@@ -18,24 +17,16 @@ class DesktopEntryReader:
         
         contents = path.read_text()
         
-        entry = DesktopEntry(
-            re.search("Name=(.*)", contents).group(1),
-            re.search("Exec=(.*)", contents).group(1),
-            re.search("Type=(.*)", contents).group(1)
-        )
-        entry.set_icon_path(re.search("Icon=(.*)", contents).group(1))
+        entry = DesktopEntry()
         
-        if re.search("Terminal=(.*)", contents).group(1) == "True":
-            entry.set_terminal()
+        entry.set_name(re.search("Name=(.*)", contents).group(1))
+        entry.set_exec_path(re.search("Exec=(.*)", contents).group(1))
+        entry.set_entry_type(re.search("Type=(.*)", contents).group(1))
+        entry.set_icon_path(re.search("Icon=(.*)", contents).group(1))
+        entry.set_terminal(re.search("Terminal=(.*)", contents).group(1) == "True")
+        entry.set_filename(file_name)
         
         return entry
 
     def read_by_name(self, name: str) -> DesktopEntry:
         return self.read(f"{slugify.slugify(name)}.desktop")
-
-
-if __name__ == "__main__":
-    dotenv.load_dotenv()
-    
-    reader = DesktopEntryReader()
-    entry = reader.read_by_name("test-spatie")

@@ -2,7 +2,7 @@ import tkinter as tk
 
 from enums.page_name import PageName
 from utils.gui.page_navigator_interface import PageNavigatorInterface
-from widgets.desktop_entry_form import AddDesktopEntryForm
+from widgets.desktop_entry_form import DesktopEntryForm
 from widgets.navigating_button import NavigatingButton
 from widgets.page.standard_page import StandardPage
 
@@ -15,7 +15,7 @@ class AddDesktopEntryPage(StandardPage):
         tk.Label(frame, text="Add Desktop Entry", background="darkgray").pack(pady=10, padx=10)
     
     def build_content_frame(self, frame: tk.Frame, request_data: dict = {}) -> None:
-        form = AddDesktopEntryForm(frame, self.page_navigator)
+        form = DesktopEntryForm(frame, self.page_navigator)
         
         form.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
     

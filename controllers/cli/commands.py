@@ -7,11 +7,13 @@ from utils.desktop_entry_writer import Desktop_entry_writer
 def generate_config_from_args(args) -> DesktopEntry:
     config = DesktopEntry(args.name, args.exec_path)
     
-    if args.terminal:
-        config.set_terminal()
+    config.set_name(args.name)
+    config.set_exec_path(args.exec_path)
     
-    if args.icon_path:
-        config.set_icon_path(args.icon_path)
+    if args.terminal:
+        config.set_terminal(True)
+    
+    config.set_icon_path(args.icon_path if args.icon_path else None)
         
     return config
 

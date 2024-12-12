@@ -12,27 +12,43 @@ from widgets.entry_type_entry import EntryTypeEntry
 from widgets.file_explorer_entry import FileExplorerEntry
 from tkinter import messagebox
 
-class AddDesktopEntryForm(tk.Frame):
-    def __init__(self, parent: tk.Widget, page_navigator: PageNavigatorInterface) -> None:
+class DesktopEntryForm(tk.Frame):
+    def __init__(
+        self,
+        parent: tk.Widget,
+        page_navigator: PageNavigatorInterface,
+        desktop_entry: DesktopEntry|None = None
+    ) -> None:
         super().__init__(parent)
         
         self.page_navigator: PageNavigatorInterface = page_navigator
         self.file_handler: FileHandler = FileHandler()
+        self.desktop_entry = desktop_entry if isinstance(desktop_entry, DesktopEntry) else DesktopEntry()
         
         self.__init_widgets()
     
     def __init_widgets(self) -> None:
         tk.Label(self, text="Name").pack()
-        tk.Entry(self, name="name", validate="focusout").pack(padx=10, pady=10)
+        name_entry = tk.Entry(self, name="name")
+        if self.desktop_entry.name:
+            name_entry.insert(0, self.desktop_entry.name)
+        name_entry.pack(padx=10, pady=10)
         
-        FileExplorerEntry(self, "exec_path", "Execution path").pack(padx=10, pady=10)
+        exec_path_entry = FileExplorerEntry(self, "exec_path", "Execution path")
+        if self.desktop_entry.exec_path is not None:
+            exec_path_entry.insert(0, self.desktop_entry.exec_path)
+        exec_path_entry.pack(padx=10, pady=10)
         
         tk.Label(self, text="Entry_type").pack()
         entry_type_entry = EntryTypeEntry(self, name="entry_type")
-        entry_type_entry.insert(0, EntryType.APPLICATION.value)
+        if self.desktop_entry.entry_type:
+            entry_type_entry.insert(0, self.desktop_entry.entry_type)
         entry_type_entry.pack(padx=10, pady=10)
         
-        FileExplorerEntry(self, "icon_path", "Icon path").pack(padx=10, pady=10)
+        icon_path_entry = FileExplorerEntry(self, "icon_path", "Icon path")
+        if self.desktop_entry.icon_path is not None:
+            icon_path_entry.insert(0, self.desktop_entry.icon_path)
+        icon_path_entry.pack(padx=10, pady=10)
         
         Checkbox(self, name="terminal", text="Is terminal", onvalue = 1, offvalue = 0).pack(padx=10, pady=10)
         
@@ -58,31 +74,29 @@ class AddDesktopEntryForm(tk.Frame):
         
         if config.icon_path and not self.file_handler.is_file(config.icon_path):
             errors.append("Icon path is not a valid path")
+            
+        if errors:
+            raise ValidationError(errors)
 
-        return errors
-
-    def get_data(self) -> DesktopEntry:
+    def set_data(self) -> DesktopEntry:
         name = self.nametowidget("name").get()
         exec_path = self.nametowidget("exec_path").get()
         entry_type = self.nametowidget("entry_type").get()
         icon = self.nametowidget("icon_path").get()
-
-        config = DesktopEntry(name,exec_path,entry_type)
-        if icon:
-            config.icon_path = icon
         
-        terminal = self.nametowidget("terminal").get()
-        config.terminal = bool(terminal)
-        
-        errors = self.validate_config(config)
-        if len(errors):
-            raise ValidationError(errors)
+        self.desktop_entry.set_name(name if name else None)
+        self.desktop_entry.set_exec_path(exec_path if exec_path else None)
+        self.desktop_entry.set_entry_type(entry_type if entry_type else None)
+        self.desktop_entry.set_icon_path(icon if icon else None)
+        self.desktop_entry.set_terminal(bool(self.nametowidget("terminal").get()))
 
-        return config
+        return self.desktop_entry
 
     def save(self) -> None:
+        config = self.set_data()
+        
         try:
-            config = self.get_data()
+            self.validate_config(config)
         except ValidationError as ve:
             messagebox.showerror("Validation errors", "\n".join(ve.errors))
             return

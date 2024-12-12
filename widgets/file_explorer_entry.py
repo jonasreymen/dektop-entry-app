@@ -9,7 +9,7 @@ class FileExplorerEntry(tk.Frame, Entry):
         
         self.__init_widgets()
         
-        self.entry = self.nametowidget(self.field_name)
+        self.entry: Entry = self.nametowidget(self.field_name)
     
     def __init_widgets(self) -> None:
         tk.Label(self, text=self.label).grid(row=0, columnspan=3)
@@ -24,6 +24,9 @@ class FileExplorerEntry(tk.Frame, Entry):
         
         self.entry.delete(0, tk.END)
         self.entry.insert(0, file_path)
+    
+    def insert(self, index: str | int, string: str) -> None:
+        self.entry.insert(index, string)
     
     def get(self) -> str:
         return self.entry.get()
