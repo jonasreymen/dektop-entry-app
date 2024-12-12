@@ -19,6 +19,7 @@ class DesktopEntryReader:
         
         entry = DesktopEntry()
         
+        # TODO: add validation if file isnt correct
         entry.set_name(re.search("Name=(.*)", contents).group(1))
         entry.set_exec_path(re.search("Exec=(.*)", contents).group(1))
         entry.set_entry_type(re.search("Type=(.*)", contents).group(1))

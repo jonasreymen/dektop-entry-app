@@ -12,6 +12,10 @@ class EditDesktopEntryPage(StandardPage):
         super().__init__(parent, PageName.EDIT_PAGE.value)
         self.page_navigator: PageNavigatorInterface = page_navigator
         self.desktop_entry_reader: DesktopEntryReader = DesktopEntryReader()
+        
+    def build(self, request_data: dict = {}) -> None:
+        #TODO: add validation if entry doesnt exist
+        return super().build(request_data)
     
     def build_title_frame(self, frame: tk.Frame, request_data: dict = {}) -> None:
         tk.Label(frame, text=f"Edit desktop entry '{request_data["file"]}'", background="darkgray").pack(pady=10, padx=10)

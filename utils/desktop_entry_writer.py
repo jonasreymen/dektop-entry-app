@@ -11,8 +11,10 @@ class Desktop_entry_writer:
         self.path: Path = Path(os.getenv("DESKTOP_ENTRY_PATH")).expanduser()
 
     def write(self, config: DesktopEntry) -> None:
+        # TODO: add validation duplicate filename
         if config.filename and config.filename != config.get_file_name():
             old_filepath = self.path / config.filename
+            if old_filepath.is_file():
             old_filepath.unlink()
         
         filepath = self.path / config.get_file_name()

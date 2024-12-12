@@ -13,4 +13,5 @@ class PageNavigator(PageNavigatorInterface):
     
     def navigate(self, name: str, request_data: dict = {}) -> None:
         """ opens a specific page """
+        #TODO: add validation if page doesnt exist
         self.pages[name].load(request_data)
