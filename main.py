@@ -1,5 +1,3 @@
-#! /usr/bin/env python3 
-
 import sys
 from controllers.gui.app import run_gui
 from controllers.cli.commands import run_cli
